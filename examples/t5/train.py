@@ -206,10 +206,20 @@ def train():
         max_length=data_args.max_len
     )
 
+    # model = T5ForConditionalGeneration.from_pretrained(
+    #     model_args.model_name_or_path,
+    #     cache_dir=model_args.cache_dir,
+    # )
+    # GPU执行 start
+    # import torch
+    args.gpu_id = 0
+    device = torch.device("cuda", args.gpu_id)
     model = T5ForConditionalGeneration.from_pretrained(
         model_args.model_name_or_path,
         cache_dir=model_args.cache_dir,
-    )
+    ).to(device)
+    # GPU执行 end
+
 
     # overwriting the default max_length
     tokenizer.model_max_length = data_args.max_len
